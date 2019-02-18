@@ -20,6 +20,11 @@ router.get("/check-login/:username/:login_code/:onStatus/:secur_key", (req, res)
         var username = req.params.username;
         var login_code = req.params.login_code;
         var onStatus = req.params.onStatus;
+        if (onStatus !== null) {
+            var setStatus = onStatus;
+        } else {
+            var setStatus = 'online';
+        }
         var where = 'WHERE username = "' + username + '"';
         db_model.getData(data_tables.users, '*', where, '').then(rs => {
             if (rs.length > 0) {
@@ -44,7 +49,7 @@ router.get("/check-login/:username/:login_code/:onStatus/:secur_key", (req, res)
                             "emails": user.emails,
                             "level": user.level
                         },
-                        "onStatus": onStatus
+                        "onStatus": setStatus
                     });
                 }
             } else {

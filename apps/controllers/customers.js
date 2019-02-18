@@ -32,7 +32,70 @@ router.get("/get-data", (req, res) => {
                 var orderBy = '';
             }
             db_model.getData(data_table, fields, where, orderBy).then(rs => {
-                res.json({ "mess": "ok", "data": rs });
+                var data = [];
+                rs.forEach(e => {
+                    if (e.num < 10) {
+                        var num = '00' + e.num;
+                    } else if (e.num < 100) {
+                        var num = '0' + e.num;
+                    } else {
+                        var num = '' + e.num;
+                    }
+                    e.number = 'VFL-' + e.year.slice(2) + num;
+
+                    e.tels = [];
+                    if (e.tel) {
+                        var tels = e.tel.split(' | ');
+                        tels.forEach(tel => {
+                            let telArr = tel.split('-');
+                            if (telArr.length > 1) {
+                                var telData = {
+                                    code: telArr[0] + '',
+                                    number: telArr[1] + '',
+                                }
+                            } else {
+                                var telData = {
+                                    code: '',
+                                    number: telArr[0] + ''
+                                }
+                            }
+                            e.tels.push(telData);
+                        });
+                    }
+
+                    e.emails = [];
+                    if (e.email) {
+                        var emails = e.email.split(' | ');
+                        emails.forEach(em => {
+                            e.emails.push({
+                                mail: em
+                            });
+                        });
+                    }
+
+                    e.otherContacts = [];
+                    if (e.other_contact) {
+                        var contacts = e.other_contact.split(' | ');
+                        contacts.forEach(ct => {
+                            const ctArr = ct.split(' : ');
+                            if (ctArr.length > 0) {
+                                var contact = {
+                                    type: ctArr[0] + '',
+                                    name: ctArr[1] + ''
+                                }
+                            } else {
+                                var contact = {
+                                    type: '',
+                                    name: ''
+                                }
+                            }
+                            e.otherContacts.push(contact);
+                        });
+                    }
+
+                    data.push(e);
+                });
+                res.json({ "mess": "ok", "data": data });
             }).catch(er => res.json({ "mess": "fail", "err": er }));
         } else {
             res.json({ "mess": "fail", "err": "Security key not right!" });
@@ -46,6 +109,8 @@ router.post("/add-data", jsonParser, (req, res) => {
     if (req.body) {
         var fields = req.body;
 
+        fields.code = func.randomString(9, 'alphanumeric', 'uppercase');
+
         var defaultPassword = func.randomString();
         fields.password = md5(defaultPassword + fields.username);
         fields.defaultPassword = defaultPassword;
@@ -57,9 +122,9 @@ router.post("/add-data", jsonParser, (req, res) => {
         db_model.getData(data_table, 'id', where, '').then(rs => {
             fields.num = rs.length + 1;
             db_model.addData(data_table, fields).then(result => {
-                res.json({"mess": "ok", "result": result});
+                res.json({ "mess": "ok", "result": result });
             }).catch(error => {
-                res.json({"mess": '"fail', "err": error});
+                res.json({ "mess": '"fail', "err": error });
             })
         }).catch(er => {
             res.json({ "mess": "fail", "err": er });

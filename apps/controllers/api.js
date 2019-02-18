@@ -178,4 +178,46 @@ router.get("/get-countries-data", (req, res) => {
     res.json(countriesData);
 });
 
+router.get("/get-currency-data", (req, res) => {
+    var db = 'mryu_currencies';
+    var fields = '*';
+    var where = '';
+    var orderBy = '';
+    db_model.getData(db, fields, where, orderBy)
+        .then(data => {
+            if (data.length > 0) {
+                var currencies = data[0].content;
+                if (currencies) {
+                    var currenciesArr = currencies.split(' || ');
+                    var currenciesData = [];
+                    currenciesArr.forEach(e => {
+                        let arr = e.split(' | ');
+                        let newData = {
+                            code: arr[0],
+                            name: arr[1],
+                            buy: arr[2],
+                            transfer: arr[3],
+                            sell: arr[4]
+                        }
+                        currenciesData.push(newData);
+                    });
+                    let vndData = {
+                        code: 'VND',
+                        name: 'VIETNAM DONG',
+                        buy: '1',
+                        transfer: '1',
+                        sell: '1'
+                    }
+                    currenciesData.unshift(vndData);
+                    res.json({ "mess": "ok", "data": currenciesData });
+                } else {
+                    res.json({"mess": "fail", "err": "noContent"});
+                }
+            } else {
+                res.json({"mess": "fail", "err": "dataNotFound"});
+            }
+        })
+        .catch(err => res.json({ "mess": "fail", "err": err }));
+});
+
 module.exports = router;

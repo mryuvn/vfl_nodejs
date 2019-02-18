@@ -109,7 +109,7 @@ router.get("/get-currencies-online", (req, res) => {
 });
 
 router.get("/get-currencies-data", (req, res) => {
-    var db = 'app_currencies';
+    var db = 'mryu_currencies';
     var fields = '*';
     var where = '';
     var orderBy = '';
@@ -166,7 +166,7 @@ router.get("/update-currencies", (req, res) => {
                 var vnTime = time.toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh' });
                 var thisTime = new Date(vnTime);
                 let id = 1;
-                let data_table = 'app_currencies';
+                let data_table = 'mryu_currencies';
                 let set = 'content = ?, updateTime = ?';
                 let where = 'id';
                 let params = [content, thisTime, id];

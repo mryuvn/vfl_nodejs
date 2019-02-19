@@ -221,7 +221,7 @@ router.get("/get-currency-data", (req, res) => {
 });
 
 router.get("/get-site-values", (req, res) => {
-    var db = data_tables.table.webs_site_value;
+    var db = 'webs_site_value';
     var fields = '*';
     var where = req.query.where;
     var orderBy = '';

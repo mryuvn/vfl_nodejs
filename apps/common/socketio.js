@@ -1,18 +1,15 @@
 module.exports = function (io) {
 
     var db_model = require('../models/db_models');
-    var data_table = 'app_users';
+    var data_table = 'mryu_users';
 
     var USERSDATA = [];
 
     var CUSTOMERSDATA = [];
 
     io.sockets.on("connection", function (socket) {
-        console.log("Có thằng vừa truy cập! ID = " + socket.id);
-
-        socket.on("GET-USERDATA", data => {
-            socket.emit('EMIT-USERSDATA', USERSDATA);
-        });
+        console.log("Có thằng vừa truy cập! ID = " + socket.id + ' username = ' + socket.username);
+        socket.emit('check-user-conecting', {socketId: socket.id});
 
         //LISTEN ON USER ACTIONS
         socket.on("user-login", data => {
@@ -38,6 +35,7 @@ module.exports = function (io) {
                     socket.broadcast.emit('user-is-now-online', emitData);
                 }
             }
+
 
             let userData = {
                 socketId: socket.id,
@@ -78,11 +76,13 @@ module.exports = function (io) {
             let thisUser = USERSDATA.find(user => {
                 return user.socketId === socket.id;
             });
-            let index = USERSDATA.indexOf(thisUser);
-            USERSDATA.splice(index, 1);
-            console.log(USERSDATA);
-            socket.emit('EMIT-USERSDATA', USERSDATA);
-            socket.broadcast.emit('EMIT-USERSDATA', USERSDATA);
+            if (thisUser) {
+                let index = USERSDATA.indexOf(thisUser);
+                USERSDATA.splice(index, 1);
+                console.log(USERSDATA);
+                socket.emit('EMIT-USERSDATA', USERSDATA);
+                socket.broadcast.emit('EMIT-USERSDATA', USERSDATA);
+            }
 
             socket.broadcast.emit('user-logout', socket.username);
 
@@ -111,11 +111,13 @@ module.exports = function (io) {
             let thisUser = USERSDATA.find(user => {
                 return user.socketId === socket.id;
             });
-            let index = USERSDATA.indexOf(thisUser);
-            USERSDATA.splice(index, 1);
-            console.log(USERSDATA);
-            socket.emit('EMIT-USERSDATA', USERSDATA);
-            socket.broadcast.emit('EMIT-USERSDATA', USERSDATA);
+            if (thisUser) {
+                let index = USERSDATA.indexOf(thisUser);
+                USERSDATA.splice(index, 1);
+                console.log(USERSDATA);
+                socket.emit('EMIT-USERSDATA', USERSDATA);
+                socket.broadcast.emit('EMIT-USERSDATA', USERSDATA);
+            }
 
             if (socket.status === 'online') {
                 let thisUserIsOnline = [];
@@ -232,6 +234,10 @@ module.exports = function (io) {
         });
         //LISTEN ON USER ACTIONS
 
+        socket.on("GET-USERDATA", data => {
+            socket.emit('EMIT-USERSDATA', USERSDATA);
+        });
+
         //LISTEN ON ANY ACTIONS
         socket.on("client_emit", data => {
             let message = data.message;
@@ -255,11 +261,13 @@ module.exports = function (io) {
             let thisUser = USERSDATA.find(user => {
                 return user.socketId === socket.id;
             });
-            let index = USERSDATA.indexOf(thisUser);
-            USERSDATA.splice(index, 1);
-            console.log(USERSDATA);
-            socket.emit('EMIT-USERSDATA', USERSDATA);
-            socket.broadcast.emit('EMIT-USERSDATA', USERSDATA);
+            if (thisUser) {
+                let index = USERSDATA.indexOf(thisUser);
+                USERSDATA.splice(index, 1);
+                console.log(USERSDATA);
+                socket.emit('EMIT-USERSDATA', USERSDATA);
+                socket.broadcast.emit('EMIT-USERSDATA', USERSDATA);
+            }
 
             if (socket.login === 'on' && socket.status === 'online') {
                 let thisUserIsOnline = [];

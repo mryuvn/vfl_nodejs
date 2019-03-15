@@ -45,7 +45,7 @@ var getStringtify = function (string) {
 var randomString = function (length, charset, capitalization) {
     if (!length) { var setLength = 9; } else { var setLength = length; };
     if (!charset) { var setCharset = 'alphanumeric'; } else { var setCharset = charset; };
-    if (!capitalization) { var setCapitalization = 'lowercase'; } else { var setCapitalization = capitalization; };
+    if (!capitalization) { var setCapitalization = null; } else { var setCapitalization = capitalization; };
     return randomstring.generate({
         length: setLength,
         charset: setCharset,

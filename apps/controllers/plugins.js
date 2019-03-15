@@ -15,25 +15,9 @@ var cheerio = require("cheerio");
 router.get("/", (req, res) => res.send("This is Plugins API"));
 
 router.get("/random-string", (req, res) => {
-    // length - the length of the random string. (default: 32) [OPTIONAL]
-    // readable - exclude poorly readable chars: 0OIl. (default: false) [OPTIONAL]
-    // charset - define the character set for the string. (default: 'alphanumeric') [OPTIONAL]
-    //     alphanumeric - [0-9 a-z A-Z]
-    //     alphabetic - [a-z A-Z]
-    //     numeric - [0-9]
-    //     hex - [0-9 a-f]
-    //     custom - any given characters
-    // capitalization - define whether the output should be lowercase / uppercase only. (default: null) [OPTIONAL]
-    //     lowercase
-    //     uppercase
-
     if (req.query.number) { var number = req.query.number; } else { var number = 9; }
-
     if (req.query.charset) { var charset = req.query.charset; } else { var charset = 'alphanumeric'; }
-
-    if (req.query.capitalization) { var capitalization = req.query.capitalization; } else { var capitalization = 'lowercase'; }
-
-    // var string = random.new(number, charset, capitalization);
+    if (req.query.capitalization) { var capitalization = req.query.capitalization; } else { var capitalization = null; }
     var string = func.randomString(number, charset, capitalization);
     res.json({ "result": string });
 });
@@ -51,19 +35,6 @@ router.get("/written-number/:number/:lang", (req, res) => {
     res.json({
         result: text
     });
-
-    // English 	en
-    // Portuguese (Brazil) 	pt
-    // Portuguese (Portugal) 	ptPT
-    // Spanish 	es
-    // French 	fr
-    // Esperanto 	eo
-    // Vietnamese 	vi
-    // Arabic 	ar
-    // Turkish 	tr
-    // English (Indian) 	enIndian
-    // Ukrainian 	uk
-    // Indonesian 	id
 });
 
 router.get("/get-currencies-online", (req, res) => {
@@ -113,7 +84,8 @@ router.get("/get-currencies-data", (req, res) => {
     var fields = '*';
     var where = '';
     var orderBy = '';
-    db_model.getData(db, fields, where, orderBy)
+    var limit = '';
+    db_model.getData(db, fields, where, orderBy, limit)
         .then(resData => {
             if (resData == '') {
                 res.json({ "mess": "fail", "err": "dataNotFound" });

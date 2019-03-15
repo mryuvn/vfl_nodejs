@@ -3,9 +3,9 @@ var db = require("../common/database");
 
 var conn = db.getConnection();
 
-function getData(db, fields, where, orderBy) {
+function getData(db, fields, where, orderBy, limit) {
     return new Promise((resolve, reject) => {
-        var query = conn.query('SELECT ' + fields + ' FROM ' + db + ' ' + where + ' ' + orderBy, (err, result) => {
+        var query = conn.query('SELECT ' + fields + ' FROM ' + db + ' ' + where + ' ' + orderBy + ' ' + limit, (err, result) => {
             if (err) {
                 return reject(err + '');
             } return resolve(result);

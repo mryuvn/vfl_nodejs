@@ -1,16 +1,21 @@
 module.exports = function (io) {
 
+    var func = require('./func');
+    var md5 = require('md5');
     var db_model = require('../models/db_models');
     var data_table = 'mryu_users';
 
     var USERSDATA = [];
-
     var CUSTOMERSDATA = [];
+    var VISITORS_DATA = [];
 
     io.sockets.on("connection", function (socket) {
         console.log("Có thằng vừa truy cập! ID = " + socket.id + ' username = ' + socket.username);
-        socket.emit('check-user-conecting', {socketId: socket.id});
-
+        socket.emit('check-user-conecting', { 
+            socketId: socket.id,
+            defaultUser: md5(socket.id + new Date()).slice(0, 20)
+        });
+        
         //LISTEN ON USER ACTIONS
         socket.on("user-login", data => {
             console.log(data.username + ' vừa đăng nhập ' + socket.id);
@@ -232,11 +237,60 @@ module.exports = function (io) {
                 }
             }
         });
-        //LISTEN ON USER ACTIONS
 
         socket.on("GET-USERDATA", data => {
             socket.emit('EMIT-USERSDATA', USERSDATA);
         });
+        //LISTEN ON USER ACTIONS
+
+        //LISTEN ON VISITOR ACTIONS
+        socket.on("visitor-info", info => {
+            console.log(info);
+            socket.username = info.username;
+            socket.name = info.name;
+            socket.broadcast.emit("visitor-info", info);
+            VISITORS_DATA.push(info);
+            console.log('-------- VISITORS_DATA --------');
+            console.log(VISITORS_DATA);
+            socket.broadcast.emit('EMIT-VISITORS-DATA', VISITORS_DATA);
+        });
+
+        socket.on('visitor-change-url', link => {
+            console.log(socket.id + ' changed url to ' + link);
+            VISITORS_DATA.forEach(e => {
+                if (e.socketId === socket.id) {
+                    e.link = link;
+                }
+            });
+            console.log('-------- VISITORS_DATA --------');
+            console.log(VISITORS_DATA);
+            socket.broadcast.emit('EMIT-VISITORS-DATA', VISITORS_DATA);
+        });
+
+        socket.on('visitor-update-data', data => {
+            VISITORS_DATA.forEach(e => {
+                console.log(e.visitorData.username);
+                if (e.visitorData.username === data.username) {
+                    console.log('Change!');
+                    e.visitorData = data;
+                }
+            });
+            console.log(VISITORS_DATA);
+            socket.broadcast.emit('EMIT-VISITORS-DATA', VISITORS_DATA);
+        });
+
+        socket.on('visitor-login-chat', username => {
+            socket.broadcast.emit('visitor-login-chat', username);
+        });
+
+        socket.on('visitor-logout-chat', username => {
+            socket.broadcast.emit('visitor-logout-chat', username);
+        });
+
+        socket.on('GET-VISITORS-DATA', () => {
+            socket.emit('EMIT-VISITORS-DATA', VISITORS_DATA);
+        })
+        //LISTEN ON VISITOR ACTIONS
 
         //LISTEN ON ANY ACTIONS
         socket.on("client_emit", data => {
@@ -253,11 +307,62 @@ module.exports = function (io) {
         });
         //LISTEN ON ANY ACTIONS
 
+        //LISTEN ON MESSAGE
+        socket.on("message", message => {
+            let data = {
+                id: socket.id,
+                message: message
+            }
+            io.sockets.emit("message", data); //Emit to all sockets
+        });
+        //LISTEN ON MESSAGE
+
+        //LISTEN ON CHAT APP
+        socket.on("visitor-chat", data => {
+            socket.broadcast.emit("visitor-chat", data);
+        });
+        socket.on("update_visitor_chat_content", data => {
+            let message = data.message;
+            let emit = data.emit;
+            let broadcast = data.broadcast;
+            let content = data.content;
+            if (emit) {
+                socket.emit(message, content);
+            }
+            if (broadcast) {
+                socket.broadcast.emit(message, content);
+            }
+        });
+        socket.on("clear-visitor-chat-attention", data => {
+            socket.broadcast.emit('clear-visitor-chat-attention', data);
+        });
+
+        socket.on("member-create-private-room-chat", data => {
+            socket.broadcast.emit("member-create-private-room-chat", data);
+        });
+        
+        socket.on("member-chat", data => {
+            socket.broadcast.emit("member-chat", data);
+        });
+        socket.on("update_member_chat_content", data => {
+            let message = data.message;
+            let emit = data.emit;
+            let broadcast = data.broadcast;
+            let content = data.content;
+            if (emit) {
+                socket.emit(message, content);
+            }
+            if (broadcast) {
+                socket.broadcast.emit(message, content);
+            }
+        });
+        //LISTEN ON CHAT APP
 
         //LISTTEN ON CLIENT DISCONNECT
         socket.on("disconnect", function () {
             console.log(socket.nickname + ' has been disconnect (' + socket.id + ')');
 
+            //USER DISCONNECT
             let thisUser = USERSDATA.find(user => {
                 return user.socketId === socket.id;
             });
@@ -287,6 +392,19 @@ module.exports = function (io) {
                     socket.broadcast.emit('user-is-offline', emitData);
                 }
             }
+            //USER DISCONNECT
+
+            //VISITOR DISCONNECT
+            let thisVisitor = VISITORS_DATA.find(visitor => {
+                return visitor.socketId === socket.id;
+            });
+            if (thisVisitor) {
+                let index = VISITORS_DATA.indexOf(thisVisitor);
+                VISITORS_DATA.splice(index, 1);
+            }
+            console.log(VISITORS_DATA);
+            socket.broadcast.emit('EMIT-VISITORS-DATA', VISITORS_DATA);
+            //VISITOR DISCONNECT
         });
     });
 }

@@ -31,7 +31,12 @@ router.get("/get-data", (req, res) => {
             } else {
                 var orderBy = '';
             }
-            db_model.getData(data_table, fields, where, orderBy).then(rs => {
+            if (req.query.limit) {
+                var limit = req.query.limit;
+            } else {
+                var limit = '';
+            }
+            db_model.getData(data_table, fields, where, orderBy, limit).then(rs => {
                 var data = [];
                 rs.forEach(e => {
                     if (e.num < 10) {
@@ -119,7 +124,7 @@ router.post("/add-data", jsonParser, (req, res) => {
         fields.year = fields.createdTime.getFullYear();
 
         var where = 'WHERE year = "' + fields.year + '"';
-        db_model.getData(data_table, 'id', where, '').then(rs => {
+        db_model.getData(data_table, 'id', where, '', '').then(rs => {
             fields.num = rs.length + 1;
             db_model.addData(data_table, fields).then(result => {
                 res.json({ "mess": "ok", "result": result });

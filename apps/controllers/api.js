@@ -34,7 +34,12 @@ router.get("/get-data", (req, res) => {
                 } else {
                     var orderBy = '';
                 }
-                db_model.getData(db, fields, where, orderBy)
+                if (req.query.limit) {
+                    var limit = req.query.limit;
+                } else {
+                    var limit = '';
+                }
+                db_model.getData(db, fields, where, orderBy, limit)
                     .then(data => {
                         res.json({ "mess": "ok", "data": data });
                     })
@@ -104,7 +109,7 @@ router.post("/add-data", jsonParser, (req, res) => {
             } else {
                 var where = 'WHERE date = "' + date + '"';
             }
-            db_model.getData(data_table, 'id', where, '')
+            db_model.getData(data_table, 'id', where, '', '')
                 .then(data => {
                     fields.num = data.length + 1;
                     // res.json({fields: fields});
@@ -124,7 +129,16 @@ router.post("/add-data", jsonParser, (req, res) => {
                 }).catch(err => res.json({ "mess": "fail", "err": err }));
         } else {
             db_model.addData(data_table, fields)
-                .then(result => res.json({ "mess": "ok", "result": result, "time": time }))
+                .then(result => res.json({
+                    "mess": "ok", 
+                    "result": result, 
+                    "code": fields.code,
+                    "reference": fields.reference,
+                    "year": fields.year,
+                    "month": fields.month,
+                    "date": fields.date,
+                    "createdTime": fields.createdTime 
+                }))
                 .catch(err => res.json({ "mess": "fail", "err": err }));
         }
     } else {
@@ -183,7 +197,7 @@ router.get("/get-currency-data", (req, res) => {
     var fields = '*';
     var where = '';
     var orderBy = '';
-    db_model.getData(db, fields, where, orderBy)
+    db_model.getData(db, fields, where, orderBy, '')
         .then(data => {
             if (data.length > 0) {
                 var currencies = data[0].content;
@@ -227,7 +241,7 @@ router.get("/get-site-values", (req, res) => {
         var fields = '*';
         var where = req.query.where;
         var orderBy = '';
-        db_model.getData(db, fields, where, orderBy)
+        db_model.getData(db, fields, where, orderBy, '')
             .then(data => {
                 if (data.length > 0) {
                     var values = data[0];

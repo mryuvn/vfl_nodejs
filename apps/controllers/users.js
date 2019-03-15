@@ -22,7 +22,7 @@ router.get("/check-login/:username/:login_code/:onStatus/:secur_key", (req, res)
         var onStatus = req.params.onStatus;
   
         var where = 'WHERE username = "' + username + '"';
-        db_model.getData(data_tables.users, '*', where, '').then(rs => {
+        db_model.getData(data_tables.users, '*', where, '', '').then(rs => {
             if (rs.length > 0) {
                 var user = rs[0];
                 if (!user.enabled) {
@@ -51,9 +51,7 @@ router.get("/check-login/:username/:login_code/:onStatus/:secur_key", (req, res)
             } else {
                 res.json({ "mess": 'fail', "err": "This User not exists!" });
             }
-        }, er => {
-            res.json({ "mess": "fail", "err": er });
-        });
+        }).catch(er => res.json({ "mess": "fail", "err": er }));
     } else {
         res.json({ "mess": "fail", "err": 'Security key not right!' });
     }

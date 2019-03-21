@@ -315,7 +315,7 @@ router.get("/db-demo/get-data", (req, res) => {
                 } else {
                     var limit = '';
                 }
-                db_model.getData(db, fields, where, orderBy, limit)
+                db_demo_model.getData(db, fields, where, orderBy, limit)
                     .then(data => {
                         res.json({ "mess": "ok", "data": data });
                     })

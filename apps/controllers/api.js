@@ -426,7 +426,7 @@ router.post("/db-demo/add-data", jsonParser, (req, res) => {
     }
 });
 
-router.post("/edit-data", jsonParser, (req, res) => {
+router.post("/db-demo/edit-data", jsonParser, (req, res) => {
     if (req.body) {
         let secur_key = req.body.secur_key;
         if (secur_key === api_secur.db_demo_secur) {
@@ -454,7 +454,7 @@ router.post("/edit-data", jsonParser, (req, res) => {
     }
 });
 
-router.post("/delete-data", jsonParser, (req, res) => {
+router.post("/db-demo/delete-data", jsonParser, (req, res) => {
     if (req.body) {
         let secur_key = req.body.secur_key;
         if (secur_key === api_secur.db_demo_secur) {

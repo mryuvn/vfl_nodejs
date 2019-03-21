@@ -9,5 +9,12 @@
         "database": "vflco_db",
         "user": "vflco_db",
         "password": "Mryu6798123@"
+    },
+    "mysql_demo": {
+        "host": "localhost",
+        "port": 3306,
+        "database": "vflco_demo",
+        "user": "vflco_demo",
+        "password": "bpXWTRBYBP"
     }
 }

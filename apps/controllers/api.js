@@ -6,6 +6,7 @@ var md5 = require('md5');
 var func = require('../common/func');
 var api_secur = require("../common/api_secur");
 var db_model = require("../models/db_models");
+var db_demo_model = require("../models/db_demo_models");
 
 var countries_data = require('../common/countries_data');
 
@@ -283,6 +284,55 @@ router.get("/get-site-values", (req, res) => {
         res.json({
             "mess": "fail",
             "err": "Fail or missing Security key!"
+        });
+    }
+});
+
+//database: vflco_demo
+router.get("/db-demo/get-data", (req, res) => {
+    var secur_key = req.query.secur_key;
+    if (secur_key) {
+        if (secur_key == api_secur.db_demo_secur) {
+            var db = req.query.db;
+            if (db) {
+                if (req.query.fields) {
+                    var fields = req.query.fields;
+                } else {
+                    var fields = '*';
+                }
+                if (req.query.where) {
+                    var where = req.query.where;
+                } else {
+                    var where = '';
+                }
+                if (req.query.orderBy) {
+                    var orderBy = req.query.orderBy;
+                } else {
+                    var orderBy = '';
+                }
+                if (req.query.limit) {
+                    var limit = req.query.limit;
+                } else {
+                    var limit = '';
+                }
+                db_model.getData(db, fields, where, orderBy, limit)
+                    .then(data => {
+                        res.json({ "mess": "ok", "data": data });
+                    })
+                    .catch(err => res.json({ "mess": "fail", "err": err }));
+            } else {
+                res.json({ "mess": "fail", "err": "No dataTable!" });
+            }
+        } else {
+            res.json({
+                "mess": "fail",
+                "err": "Security key is not right!"
+            });
+        }
+    } else {
+        res.json({
+            "mess": "fail",
+            "err": "No security key!"
         });
     }
 });

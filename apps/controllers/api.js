@@ -198,7 +198,7 @@ router.get("/get-client-ip", (req, res) => {
 
     var geo = geoip.lookup(ip);
     res.json({
-        ip: ip2,
+        ip: ip,
         data: geo
     });
 });

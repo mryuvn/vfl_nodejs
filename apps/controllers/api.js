@@ -2,6 +2,7 @@ var express = require("express");
 var jsonParser = require("body-parser").json();
 var router = express.Router();
 
+var geoip = require('geoip-lite');
 var md5 = require('md5');
 var func = require('../common/func');
 var api_secur = require("../common/api_secur");
@@ -187,6 +188,19 @@ router.post("/delete-data", jsonParser, (req, res) => {
             "err": "No data post received!"
         });
     }
+});
+
+router.get("/get-client-ip", (req, res) => {
+    var ip = (req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress).split(",")[0];
+
+    var geo = geoip.lookup(ip);
+    res.json({
+        ip: ip2,
+        data: geo
+    });
 });
 
 router.get("/get-countries-data", (req, res) => {

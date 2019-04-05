@@ -190,7 +190,7 @@ router.post("/delete-data", jsonParser, (req, res) => {
     }
 });
 
-router.get("/get-client-ip", (req, res) => {
+router.get("/get-client-data", (req, res) => {
     var ip = (req.headers['x-forwarded-for'] ||
         req.connection.remoteAddress ||
         req.socket.remoteAddress ||
@@ -199,7 +199,10 @@ router.get("/get-client-ip", (req, res) => {
     var geo = geoip.lookup(ip);
     res.json({
         ip: ip,
-        data: geo
+        domain: req.headers.origin,
+        url: req.headers.referer,
+        userAgent: req.headers['user-agent'],
+        ipData: geo
     });
 });
 

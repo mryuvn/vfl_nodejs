@@ -309,7 +309,7 @@ router.get("/get-site-values", (req, res) => {
 //database: vflco_db
 router.get("/db/get-data", (req, res) => {
     var secur_key = req.query.secur_key;
-    if (secur_key === api_secur.db_demo_secur) {
+    if (secur_key === api_secur.secur) {
         var db = req.query.db;
         if (db) {
             if (req.query.fields) {
@@ -351,7 +351,7 @@ router.get("/db/get-data", (req, res) => {
 router.post("/db/add-data", jsonParser, (req, res) => {
     if (req.body) {
         var secur_key = req.body.secur_key;
-        if (secur_key === api_secur.db_demo_secur) {
+        if (secur_key === api_secur.secur) {
             var data_table = req.body.data_table;
             var fields = req.body.fields;
 
@@ -447,7 +447,7 @@ router.post("/db/add-data", jsonParser, (req, res) => {
 router.post("/db/edit-data", jsonParser, (req, res) => {
     if (req.body) {
         let secur_key = req.body.secur_key;
-        if (secur_key === api_secur.db_demo_secur) {
+        if (secur_key === api_secur.secur) {
             let data_table = req.body.data_table;
             let set = req.body.set;
             let where = req.body.where;
@@ -475,7 +475,7 @@ router.post("/db/edit-data", jsonParser, (req, res) => {
 router.post("/db/delete-data", jsonParser, (req, res) => {
     if (req.body) {
         let secur_key = req.body.secur_key;
-        if (secur_key === api_secur.db_demo_secur) {
+        if (secur_key === api_secur.secur) {
             let data_table = req.body.data_table;
             let where = req.body.where;
             db_model.deleteData(data_table, where)

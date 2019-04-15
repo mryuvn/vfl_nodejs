@@ -252,7 +252,7 @@ module.exports = function (io) {
             VISITORS_DATA.push(info);
             console.log('-------- VISITORS_DATA --------');
             console.log(VISITORS_DATA);
-            socket.broadcast.emit('EMIT-VISITORS-DATA', VISITORS_DATA);
+            io.sockets.emit('EMIT-VISITORS-DATA', VISITORS_DATA);
         });
 
         socket.on('visitor-change-url', link => {
@@ -289,7 +289,7 @@ module.exports = function (io) {
 
         socket.on('GET-VISITORS-DATA', () => {
             socket.emit('EMIT-VISITORS-DATA', VISITORS_DATA);
-        })
+        });
         //LISTEN ON VISITOR ACTIONS
 
         //LISTEN ON ANY ACTIONS

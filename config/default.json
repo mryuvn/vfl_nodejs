@@ -23,5 +23,12 @@
         "database": "vflco_visas",
         "user": "vflco_visas",
         "password": "BmDnKuGfc"
+    },
+    "mysql_travel": {
+        "host": "localhost",
+        "port": 3306,
+        "database": "vflco_traveldocs",
+        "user": "vflco_traveldocs",
+        "password": "QzUYZHkGjv"
     }
 }

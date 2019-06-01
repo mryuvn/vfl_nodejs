@@ -13,7 +13,7 @@ var countries_data = require('../common/countries_data');
 router.use("/demo", require(__dirname + "/sqls_api/vflco_demo"));
 router.use("/visas", require(__dirname + "/sqls_api/vflco_visas"));
 router.use("/traveldocs", require(__dirname + "/sqls_api/vflco_traveldocs"));
-router.use("/vfladmin", require(__dirname + "/sqls_api/vflco_vfladmin"));
+router.use("/vfl-admin", require(__dirname + "/sqls_api/vflco_vfladmin"));
 
 router.get("/", function (req, res) {
     res.json({ "mess": "This is APIs page" });

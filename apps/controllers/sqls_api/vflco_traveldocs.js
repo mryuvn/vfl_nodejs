@@ -3,11 +3,11 @@ var jsonParser = require("body-parser").json();
 var router = express.Router();
 
 var func = require("../../common/func");
-var db_model = require("../../models/db_vfladmin_models");
-var api_secur = 'WeTTpKKd';
+var db_model = require("../../models/db_travel_models");
+var api_secur = 'QzUYZHkGjv';
 
 router.get("/", function (req, res) {
-    res.json({ "mess": "This is vflco_vfladmin Api" });
+    res.json({ "mess": "This is vflco_traveldocs Api" });
 });
 
 router.get("/get-data", (req, res) => {

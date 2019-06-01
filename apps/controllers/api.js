@@ -13,6 +13,8 @@ var db_travel_model = require("../models/db_travel_models");
 
 var countries_data = require('../common/countries_data');
 
+router.use("/vfladmin", require(__dirname + "/sqls_api/vflco_vfladmin"));
+
 router.get("/", function (req, res) {
     res.json({ "mess": "This is APIs page" });
 });
@@ -393,11 +395,11 @@ router.post("/db/add-data", jsonParser, (req, res) => {
 
             if (options.setNum) {
                 if (options.setNum == 'year') {
-                    var where = 'WHERE year = "' + year + '"';
+                    var where = 'WHERE year = "' + fields.year + '"';
                 } else if (options.setNum == 'month') {
-                    var where = 'WHERE month = "' + month + '"';
+                    var where = 'WHERE month = "' + fields.month + '"';
                 } else {
-                    var where = 'WHERE date = "' + date + '"';
+                    var where = 'WHERE date = "' + fields.date + '"';
                 }
                 db_model.getData(data_table, 'id', where, '', '')
                     .then(data => {

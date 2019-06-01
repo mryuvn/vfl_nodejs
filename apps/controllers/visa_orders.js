@@ -15,7 +15,7 @@ router.get("/get-data", (req, res) => {
         var fields = '*';
         var where = req.query.where;
         var orderBy = ' ORDER BY time DESC';
-        var limit = '';
+        var limit = req.query.limit;
         db_model.getData(db_table, fields, where, orderBy, limit)
             .then(data => {
                 var newData = [];

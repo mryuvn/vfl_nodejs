@@ -7,6 +7,9 @@ var md5 = require('md5');
 var func = require('../common/func');
 var api_secur = require("../common/api_secur");
 var db_model = require("../models/db_models");
+var data_tables = {
+    users: 'mryu_users',
+}
 
 var countries_data = require('../common/countries_data');
 

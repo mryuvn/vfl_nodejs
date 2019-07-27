@@ -10,7 +10,7 @@ router.use("/customers", require(__dirname + "/customers"));
 router.use("/visa-orders", require(__dirname + "/visa_orders"));
 
 router.get("/", function (req, res) {
-    res.json({"mess": "<vfl_nodejs> Welcome to Nodejs Application!"});    
+    res.json({"mess": "<vfl_nodejs> Welcome to Nodejs Application!"});
 });
 
 module.exports = router;

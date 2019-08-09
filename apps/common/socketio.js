@@ -249,7 +249,10 @@ module.exports = function (io) {
             socket.username = info.username;
             socket.name = info.name;
             socket.broadcast.emit("visitor-info", info);
-            VISITORS_DATA.push(info);
+            const rs = VISITORS_DATA.find(data => data.socketId === info.socketId);
+            if (!rs) {
+                VISITORS_DATA.push(info);
+            }
             console.log('-------- VISITORS_DATA --------');
             console.log(VISITORS_DATA);
             io.sockets.emit('EMIT-VISITORS-DATA', VISITORS_DATA);

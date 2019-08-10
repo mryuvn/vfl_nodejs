@@ -1,4 +1,5 @@
 var randomstring = require("randomstring");
+var visitors_model = require("../models/db_visitors_models");
 
 var getVnTime = function () {
     let time = new Date();
@@ -53,10 +54,21 @@ var randomString = function (length, charset, capitalization) {
     });
 }
 
+var updateVisitorDisconnectTime = function (id, time) {
+    let data_table = 'visitors';
+    let set = 'disconnectTime = ?';
+    let where = 'id';
+    let params = [ time, id ];
+    visitors_model.editData(data_table, set, where, params)
+        .then(rs => console.log(rs))
+        .catch(err => console.log(err))
+}
+
 module.exports = {
     add: add,
     accented_characters: accented_characters,
     getStringtify: getStringtify,
     randomString: randomString,
-    getVnTime: getVnTime
+    getVnTime: getVnTime,
+    updateVisitorDisconnectTime: updateVisitorDisconnectTime
 };

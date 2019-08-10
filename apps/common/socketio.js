@@ -372,7 +372,8 @@ module.exports = function (io) {
 
         //LISTTEN ON CLIENT DISCONNECT
         socket.on("disconnect", function () {
-            console.log(socket.nickname + ' has been disconnect (' + socket.id + ')');
+            let time = new Date();
+            console.log(socket.nickname + ' has been disconnect (' + socket.id + ') on ' + time);
 
             //USER DISCONNECT
             let thisUser = USERSDATA.find(user => {
@@ -411,6 +412,10 @@ module.exports = function (io) {
                 return visitor.socketId === socket.id;
             });
             if (thisVisitor) {
+                if (thisVisitor.id) {
+                    func.updateVisitorDisconnectTime(thisVisitor.id, time);
+                }
+
                 let index = VISITORS_DATA.indexOf(thisVisitor);
                 VISITORS_DATA.splice(index, 1);
             }

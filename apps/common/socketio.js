@@ -413,7 +413,7 @@ module.exports = function (io) {
             });
             if (thisVisitor) {
                 if (thisVisitor.id) {
-                    func.updateVisitorDisconnectTime(thisVisitor.id, time);
+                    func.updateVisitorDisconnectedTime(thisVisitor.id, time);
                 }
 
                 let index = VISITORS_DATA.indexOf(thisVisitor);

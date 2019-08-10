@@ -54,9 +54,9 @@ var randomString = function (length, charset, capitalization) {
     });
 }
 
-var updateVisitorDisconnectTime = function (id, time) {
+var updateVisitorDisconnectedTime = function (id, time) {
     let data_table = 'visitors';
-    let set = 'disconnectTime = ?';
+    let set = 'disconnectedTime = ?';
     let where = 'id';
     let params = [ time, id ];
     visitors_model.editData(data_table, set, where, params)
@@ -70,5 +70,5 @@ module.exports = {
     getStringtify: getStringtify,
     randomString: randomString,
     getVnTime: getVnTime,
-    updateVisitorDisconnectTime: updateVisitorDisconnectTime
+    updateVisitorDisconnectedTime: updateVisitorDisconnectedTime
 };

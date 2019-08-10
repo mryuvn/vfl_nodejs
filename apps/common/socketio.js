@@ -258,6 +258,15 @@ module.exports = function (io) {
             io.sockets.emit('EMIT-VISITORS-DATA', VISITORS_DATA);
         });
 
+        socket.on("update-visitor-id", id => {
+            VISITORS_DATA.forEach(e => {
+                if (e.socketId === socket.id) {
+                    e.id = id;
+                }
+            });
+            socket.broadcast.emit('EMIT-VISITORS-DATA', VISITORS_DATA);
+        });
+
         socket.on('visitor-change-url', link => {
             console.log(socket.id + ' changed url to ' + link);
             VISITORS_DATA.forEach(e => {

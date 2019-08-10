@@ -17,6 +17,13 @@
         "user": "vflco_demo",
         "password": "bpXWTRBYBP"
     },
+    "mysql_visitors": {
+        "host": "localhost",
+        "port": 3306,
+        "database": "vflco_visitors",
+        "user": "vflco_visitors",
+        "password": "hHxMb7vde"
+    },
     "mysql_visas": {
         "host": "localhost",
         "port": 3306,

@@ -14,6 +14,7 @@ var data_tables = {
 var countries_data = require('../common/countries_data');
 
 router.use("/demo", require(__dirname + "/sqls_api/vflco_demo"));
+router.use("/visitors", require(__dirname + "/sqls_api/vflco_visitors"));
 router.use("/visas", require(__dirname + "/sqls_api/vflco_visas"));
 router.use("/traveldocs", require(__dirname + "/sqls_api/vflco_traveldocs"));
 router.use("/vfl-admin", require(__dirname + "/sqls_api/vflco_vfladmin"));

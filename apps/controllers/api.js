@@ -220,8 +220,24 @@ router.get("/get-countries-data", (req, res) => {
 });
 
 router.get("/get-languages-data", (req, res) => {
-    let languages = languages.languages;
-    res.json(languages);
+    let db = 'mryu_languages';
+    let fields = '*';
+    if (req.query.where) {
+        var where = req.query.where;
+    } else {
+        var where = '';
+    }
+    if (req.query.orderBy) {
+        var orderBy = req.query.orderBy;
+    } else {
+        var orderBy = '';
+    }
+    let limit = '';
+    db_model.getData(db, fields, where, orderBy, limit)
+            .then(data => {
+                res.json({ "mess": "ok", "data": data });
+            })
+            .catch(err => res.json({ "mess": "fail", "err": err }));
 });
 
 router.get("/get-currency-data", (req, res) => {

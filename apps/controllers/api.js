@@ -219,7 +219,7 @@ router.get("/get-countries-data", (req, res) => {
     res.json(countriesData);
 });
 
-router.get("get-languages-data", (req, res) => {
+router.get("/get-languages-data", (req, res) => {
     let languages = languages.languages;
     res.json(languages);
 });

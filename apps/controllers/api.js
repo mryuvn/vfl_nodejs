@@ -11,7 +11,8 @@ var data_tables = {
     users: 'mryu_users',
 }
 
-var countries_data = require('../common/countries_data');
+var countries = require('../common/countries_data');
+var languages = require('../common/languages_data');
 
 router.use("/demo", require(__dirname + "/sqls_api/vflco_demo"));
 router.use("/visitors", require(__dirname + "/sqls_api/vflco_visitors"));
@@ -214,8 +215,13 @@ router.get("/get-client-data", (req, res) => {
 });
 
 router.get("/get-countries-data", (req, res) => {
-    var countriesData = countries_data.countries;
+    let countriesData = countries.countries;
     res.json(countriesData);
+});
+
+router.get("get-languages-data", (req, res) => {
+    let languages = languages.languages;
+    res.json(languages);
 });
 
 router.get("/get-currency-data", (req, res) => {

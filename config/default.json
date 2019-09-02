@@ -44,5 +44,12 @@
         "database": "vflco_vfladmin",
         "user": "vflco_vfladmin",
         "password": "WeTTpKKd"
+    },
+    "mysql_booking": {
+        "host": "localhost",
+        "port": 3306,
+        "database": "vflco_booking",
+        "user": "vflco_booking",
+        "password": "ZKf5KndRt"
     }
 }

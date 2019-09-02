@@ -19,6 +19,7 @@ router.use("/visitors", require(__dirname + "/sqls_api/vflco_visitors"));
 router.use("/visas", require(__dirname + "/sqls_api/vflco_visas"));
 router.use("/traveldocs", require(__dirname + "/sqls_api/vflco_traveldocs"));
 router.use("/vfl-admin", require(__dirname + "/sqls_api/vflco_vfladmin"));
+router.use("/booking", require(__dirname + "/sqls_api/vflco_booking"));
 
 router.get("/", function (req, res) {
     res.json({ "mess": "This is APIs page" });

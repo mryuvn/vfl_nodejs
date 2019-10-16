@@ -15,7 +15,7 @@ router.get("/countries", (req, res) => {
         var orderBy = ''; 
     }
     if (req.query.limit) { 
-        var limit = req.query.limit; 
+        var limit = 'LIMIT ' + req.query.limit; 
     } else { 
         var limit = ''; 
     }

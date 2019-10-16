@@ -12,8 +12,8 @@ router.get("/countries", (req, res) => {
     if (req.query.orderBy) { var orderBy = 'ORDER BY ' + req.query.orderBy; } else { var orderBy = ''; }
     if (req.query.limit) { } else { var limit = ''; }
     var fields = '*';
-    var where = '';
-    var db = 'mryu_currencies';
+    var where = 'WHERE hien_thi = 1';
+    var db = 'mryu_countries';
     db_model.getData(db, fields, where, orderBy, limit)
         .then(rs => {
             let data = [];

@@ -58,5 +58,12 @@
         "database": "vflco_leevisa",
         "user": "vflco_leevisa",
         "password": "D4kSSoVCS"
+    },
+    "mysql_visahcm": {
+        "host": "localhost",
+        "port": 3306,
+        "database": "vflco_visahcm",
+        "user": "vflco_visahcm",
+        "password": "cCnlQXXnQ"
     }
 }

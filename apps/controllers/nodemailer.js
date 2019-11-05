@@ -10,6 +10,7 @@ router.get("/", function(req, res){
 
 router.post('/sendMail', jsonParser, (req, res) => {
     if (req.body) {
+        var mailServer = req.body.acc.mailServer;
         var name = req.body.acc.name;
         var user = req.body.acc.user;
         var pass = req.body.acc.pass;
@@ -18,35 +19,101 @@ router.post('/sendMail', jsonParser, (req, res) => {
         var subject = req.body.data.subject;
         var content = req.body.data.content;
     
-        var transporter = nodemailer.createTransport({
-            host:'smtp.zoho.com',
-            port:'465',
-            secure:true,
-            auth:{
-                user:user,
-                pass:pass
-            }
-        })
-        transporter.sendMail({
-            from:name+'<'+user+'>',
-            to:email,
-            subject:subject,
-            text:'',
-            html:content
-        }, (err, response) => {
-            if (err) {
-                res.json({
-                    "mess": "fail",
-                    "error": err,
-                    "postData": req.body
-                });
-                console.log(err);
-            } else {
-                res.json({
-                    "mess": "ok"
-                });
-            }
-        })
+        if (mailServer == 'zoho') {
+            var transporter = nodemailer.createTransport({
+                host:'smtp.zoho.com',
+                port:'465',
+                secure:true,
+                auth:{
+                    user:user,
+                    pass:pass
+                }
+            })
+            transporter.sendMail({
+                from:name+'<'+user+'>',
+                to:email,
+                subject:subject,
+                text:'',
+                html:content
+            }, (err, response) => {
+                if (err) {
+                    res.json({
+                        "mess": "fail",
+                        "error": err,
+                        "postData": req.body
+                    });
+                } else {
+                    res.json({
+                        "mess": "ok"
+                    });
+                }
+            })
+        } else if (mailServer == 'office365') {
+            var transporter = nodemailer.createTransport({
+                host:'smtp.office365.com',
+                port:'587',
+                secureConnection:false,
+                auth:{
+                    user:user,
+                    pass:pass
+                },
+                tls: { ciphers: 'SSLv3' }
+            })
+            transporter.sendMail({
+                from:name+'<'+user+'>',
+                to:email,
+                subject:subject,
+                text:'',
+                html:content
+            }, (err, response) => {
+                if (err) {
+                    res.json({
+                        "mess": "fail",
+                        "error": err,
+                        "postData": req.body
+                    });
+                } else {
+                    res.json({
+                        "mess": "ok"
+                    });
+                }
+            })
+        } else if (mailServer == 'gmail') {
+            var transporter = nodemailer.createTransport({
+                host:'smtp.googlemail.com',
+                port:'465',
+                secure:true,
+                auth:{
+                    user:user,
+                    pass:pass
+                }
+            })
+            transporter.sendMail({
+                from:name+'<'+user+'>',
+                to:email,
+                subject:subject,
+                text:'',
+                html:content
+            }, (err, response) => {
+                if (err) {
+                    res.json({
+                        "mess": "fail",
+                        "error": err,
+                        "postData": req.body
+                    });
+                } else {
+                    res.json({
+                        "mess": "ok"
+                    });
+                }
+            })
+        } else {
+            res.json({
+                "mess":"fail",
+                "error": "Mail server not found!",
+                "postData": req.body
+            });
+        }
     } else {
         res.json({
             "mess": "fail",

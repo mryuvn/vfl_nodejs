@@ -285,6 +285,13 @@ router.get("/get-currency-data", (req, res) => {
         .catch(err => res.json({ "mess": "fail", "err": err }));
 });
 
+router.get("/get-visa-order-types", (req, res) => {
+    db_model.getData('mryu_visa_order_types', '*', '', '', '')
+        .then(data => {
+            res.json({ mess: 'ok', data: data });
+        }).catch(err => res.json({ mess: 'fail', err: err }));
+});
+
 router.get("/get-site-values", (req, res) => {
     var secur_key = req.query.secur_key;
     if (secur_key == api_secur.secur) {

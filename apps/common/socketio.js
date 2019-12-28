@@ -304,6 +304,18 @@ module.exports = function (io) {
         });
         //LISTEN ON VISITOR ACTIONS
 
+        //LISTEN ON JOIN PEERJS
+        socket.on('join-peerId', peerId => {
+            USERSDATA.forEach(user => {
+                if (user.socketId === socket.id) {
+                    user.peerId = peerId;
+                }
+            });
+            socket.emit('EMIT-USERSDATA', USERSDATA);
+            socket.broadcast.emit('EMIT-USERSDATA', USERSDATA);
+        });
+        //LISTEN ON JOIN PEERJS
+
         //LISTEN ON ANY ACTIONS
         socket.on("client_emit", data => {
             let message = data.message;

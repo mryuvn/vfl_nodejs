@@ -18,12 +18,18 @@ app.use(controllers);
 
 var host = config.get("server.host");
 var port = config.get("server.port");
-var server = app.listen(port, host, function () {
-    console.log("vfl_nodejs: Serve is listening in PORT ", port);
-    let time = new Date();
-    let vnTime = time.toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh' });
-    let today = new Date(vnTime);
-    console.log('To day is: ' + today);
+var portSSL = config.get("server.portSSL");
+var httpsOptions = {
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem')
+}
+
+var server = http.createServer(app).listen(port, host, function () {
+    console.log("lee_nodejs: Server HTTP is listening in PORT ", port);
+});
+
+var serverHttps = https.createServer(httpsOptions, app).listen(portSSL, host, function() {
+    console.log("lee_nodejs: Server HTTPS is listening in PORT ", portSSL);
 });
 
 var io = socketio(server);

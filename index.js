@@ -28,12 +28,12 @@ var httpsOptions = {
 }
 
 var server = http.createServer(app).listen(port, host, function () {
-    console.log("lee_nodejs: Server HTTP is listening in PORT ", port);
+    console.log("vfl_nodejs: Server HTTP is listening in PORT ", port);
 });
 
 var serverHttps = https.createServer(httpsOptions, app).listen(portSSL, host, function() {
-    console.log("lee_nodejs: Server HTTPS is listening in PORT ", portSSL);
+    console.log("vfl_nodejs: Server HTTPS is listening in PORT ", portSSL);
 });
 
-var io = socketio(server);
+var io = socketio(serverHttps);
 var socketio = require("./apps/common/socketio")(io);
